@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "Affordable Cars",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
