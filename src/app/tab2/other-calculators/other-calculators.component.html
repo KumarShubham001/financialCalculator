@@ -1,0 +1,165 @@
+<div class="main-container">
+  <!-- <div class="section-header">
+    <ion-text color="primary">
+      <h1>Other Calculators</h1>
+    </ion-text>
+  </div> -->
+
+  <div class="section-body">
+
+    <!-- Target Amount Calculator -->
+    <div class="calculator-section">
+      <ion-text color="dark">
+        <h5>Present Value of Money Calculator</h5>
+      </ion-text>
+      <form [formGroup]='TACalcForm'>
+        <ion-item class="form-item">
+          <ion-label position="stacked">Target Amount (Rs.)</ion-label>
+          <ion-input type="text" (ionBlur)="formatNumber($event)" (ionFocus)="transformNumber($event)" required="true"
+            placeholder='Ex. 1000000' formControlName='amount'></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked" style="width: 136%; max-width: 136%">
+            <ion-text color="dark" style="width: 100%">
+              <h1 class="field-label">
+                <span style="margin-right: 15px">Investment Duration</span>
+                <b>{{investmentPeriod | number}} years</b>
+              </h1>
+            </ion-text>
+          </ion-label>
+          <ion-range class="custom-range" (ionChange)="investmentPeriod = $event['detail'].value" pin="true"
+            [value]="investmentPeriod" min="1" max="30" color="secondary"></ion-range>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked" style="width: 136%; max-width: 136%">
+            <ion-text color="dark" style="width: 100%;">
+              <h1 class="field-label">
+                <span style="margin-right: 15px">Est. Annual Interest Rate</span>
+                <b>{{interestRate | number}}%</b>
+              </h1>
+            </ion-text>
+          </ion-label>
+          <ion-range class="custom-range" (ionChange)="interestRate = $event['detail'].value" pin="true"
+            [value]="interestRate" min="1" max="10" step="0.1" snaps="true" ticks="true" color="secondary"></ion-range>
+        </ion-item>
+
+        <div class="button-container">
+          <ion-button (click)="TACalculate(TACalcForm)"
+            [disabled]="TACalcForm.pristine || (TACalcForm.invalid && TACalcForm.dirty)" type='button' color="primary">
+            Calculate</ion-button>
+        </div>
+      </form>
+
+      <div class="content" id="result" *ngIf="TAContentLoaded">
+        <div class="box-content">
+          <p>
+            You need to invest
+            <ion-text>
+              <p>
+                <ion-text color="success">{{ MATH.round(totalInvestment / investmentPeriod / 12) | inrCurrency }}
+                </ion-text> every month
+              </p>
+            </ion-text>
+            or,
+            <ion-text>
+              <p>
+                <ion-text color="success">{{ MATH.round(totalInvestment / investmentPeriod) | inrCurrency }}
+                </ion-text> every year
+              </p>
+            </ion-text>
+            or
+            <ion-text>
+              <p>
+                <ion-text color="success">{{ MATH.round(totalInvestment) | inrCurrency }}
+                </ion-text> as one-time investment
+              </p>
+            </ion-text>
+            for <b>{{ investmentPeriod | number }} years</b><br>
+            Hence, will earn <ion-text color="warning">{{ interestEarned | inrCurrency }}</ion-text> as interest
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Amount doble Duration Calculator -->
+    <div class="calculator-section">
+      <ion-text color="dark">
+        <h5>How long will it take to double the money?</h5>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="stacked" style="width: 136%; max-width: 136%">
+          <ion-text color="dark" style="width: 100%;">
+            <h1 class="field-label">
+              <span style="margin-right: 15px">Est. Annual Interest Rate</span>
+              <b>{{doubleCalcInterestRate | number}}%</b>
+            </h1>
+          </ion-text>
+        </ion-label>
+        <ion-range class="custom-range" (ionChange)="doubleCalcInterestRate = $event['detail'].value" pin="true"
+          [value]="doubleCalcInterestRate" min="1" max="10" step="0.1" snaps="true" ticks="true" color="secondary">
+        </ion-range>
+      </ion-item>
+
+      <div class="button-container">
+        <ion-button (click)="doubleCalculator()" type='button' color="primary"> Calculate</ion-button>
+      </div>
+
+      <div class="content" id="result" *ngIf="doubleCalcContentLoaded">
+        <div class="box-content">
+          <p>
+            At <b>{{ doubleCalcInterestRate }}%</b> annual interest rate, You need to invest for
+            <ion-text color="success">
+              <p>Approx. {{ doubleCalcDuration | number }} years</p>
+            </ion-text>
+            in order to double your money
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Amount triple Duration Calculator -->
+    <div class="calculator-section">
+      <ion-text color="dark">
+        <h5>How long will it take to triple the money?</h5>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="stacked" style="width: 136%; max-width: 136%">
+          <ion-text color="dark" style="width: 100%;">
+            <h1 class="field-label">
+              <span style="margin-right: 15px">Est. Annual Interest Rate</span>
+              <b>{{doubleCalcInterestRate | number}}%</b>
+            </h1>
+          </ion-text>
+        </ion-label>
+        <ion-range class="custom-range" (ionChange)="doubleCalcInterestRate = $event['detail'].value" pin="true"
+          [value]="doubleCalcInterestRate" min="1" max="10" step="0.1" snaps="true" ticks="true" color="secondary">
+        </ion-range>
+      </ion-item>
+
+      <div class="button-container">
+        <ion-button (click)="tripleCalculator()" type='button' color="primary"> Calculate</ion-button>
+      </div>
+
+      <div class="content" id="result" *ngIf="tripleCalcContentLoaded">
+        <div class="box-content">
+          <p>
+            At <b>{{ tripleCalcInterestRate }}%</b> annual interest rate, You need to invest for
+            <ion-text color="success">
+              <p>Approx. {{ tripleCalcDuration | number }} years</p>
+            </ion-text>
+            in order to triple your money
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

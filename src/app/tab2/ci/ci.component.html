@@ -1,0 +1,99 @@
+<div class="main-container">
+  <div class="section-header">
+    <ion-text color="primary">
+      <h1>Compound Interest Calculator</h1>
+    </ion-text>
+  </div>
+
+  <div class="section-body">
+    <form [formGroup]='userForm'>
+      <ion-item class="investmentType">
+        <ion-label position="stacked">Investment Type</ion-label>
+        <div class="button-container investmentTypeBtnContainer">
+          <ng-container *ngFor="let item of investmentTypeOpt">
+            <button [ngClass]="{'active': investmentType===item.value}"
+              (click)="investmentType = item.value">{{ item.label }}</button>
+          </ng-container>
+        </div>
+      </ion-item>
+
+      <ion-item class="form-item">
+        <ion-label position="stacked">Investment (Rs.)</ion-label>
+        <ion-input type="text" (ionBlur)="formatNumber($event)" (ionFocus)="transformNumber($event)" required="true"
+          placeholder='Ex. 1000000' formControlName='principal'></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked" style="width: 136%; max-width: 136%">
+          <ion-text color="dark" style="width: 100%">
+            <h1 class="field-label">
+              <span style="margin-right: 15px">Investment Perioid</span>
+              <b>{{investmentPeriod | number}} years</b>
+            </h1>
+          </ion-text>
+        </ion-label>
+        <ion-range class="custom-range" (ionChange)="updateInvestmentPeriod($event)" pin="true"
+          [value]="investmentPeriod" min="1" max="60" color="secondary"></ion-range>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked" style="width: 136%; max-width: 136%">
+          <ion-text color="dark" style="width: 100%;">
+            <h1 class="field-label">
+              <span style="margin-right: 15px">Annual Rate of Return</span>
+              <b>{{interestRate | number}}%</b>
+            </h1>
+          </ion-text>
+        </ion-label>
+        <ion-range class="custom-range" (ionChange)="updateInterestRate($event)" pin="true" [value]="interestRate"
+          min="1" max="30" step="1" snaps="true" ticks="true" color="secondary"></ion-range>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Compounding Period</ion-label>
+        <ion-select formControlName='compoundingPeriod' value="brown" okText="Okay" cancelText="Dismiss"
+          placeholder="Select One">
+          <ion-select-option *ngFor="let item of compoundingPeriodOpt" [value]="item.value">{{ item.label }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <div class="button-container">
+        <ion-button (click)="calculate(userForm)" [disabled]="userForm.pristine || (userForm.invalid && userForm.dirty)"
+          type='button' color="primary">
+          Calculate</ion-button>
+      </div>
+    </form>
+
+    <div class="content" id="result" *ngIf="contentLoaded">
+      <div class="box-content">
+        <p>
+          <ion-text color="primary">Total Investment<br>{{ totalInvestment | inrCurrency }}</ion-text>
+        </p>
+        <p>+</p>
+        <p>
+          <ion-text color="success">Interest Earned<br>{{ interestEarned | inrCurrency }}</ion-text>
+        </p>
+        <p>=</p>
+        <p>
+          <ion-text color="primary">Maturity Amount<br>{{ maturityAmount | inrCurrency }}</ion-text>
+        </p>
+      </div>
+
+      <ion-item *ngIf="investmentType === investmentTypeOpt[0].value">
+        <div class="chart-container doughnutChart">
+          <canvas #doughnutCanvas></canvas>
+        </div>
+      </ion-item>
+
+      <div class="chart-container lineChart">
+        <ion-text color="dark">
+          <p class="chart-title">Power of compounding</p>
+        </ion-text>
+        <canvas height="300px" #lineCanvas></canvas>
+      </div>
+
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "Financial Calculator",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
