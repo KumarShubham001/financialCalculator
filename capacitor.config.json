@@ -1,6 +1,6 @@
 {
 	"appId": "io.ionic.starter",
-	"appName": "Affordable Cars",
+	"appName": "Financial Calculator",
 	"webDir": "www",
 	"bundledWebRuntime": false
 }

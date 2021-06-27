@@ -1,0 +1,88 @@
+$primary: #386DFF;
+$grey: rgb(239, 239, 239);
+
+.button-container {
+  margin-top: 15px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.investmentTypeBtnContainer {
+    justify-content: flex-start;
+    margin-bottom: 15px;
+
+    button {
+      padding: 13px 20px;
+      border-radius: 5px;
+      width: fit-content;
+      border: 1px solid $grey;
+      outline: none;
+
+      &.active,
+      &:hover,
+      &:active {
+        outline: none;
+      }
+
+      &.active {
+        border: 1px solid $primary;
+        background: transparent;
+        color: $primary;
+      }
+
+      &:not(:first-of-type) {
+        margin-left: 15px;
+      }
+    }
+  }
+}
+
+ion-button {
+  ion-icon {
+    margin-right: 5px;
+  }
+}
+
+.field-label {
+  font-size: 1.4em;
+}
+
+.calculator-section {
+  border-bottom: 1px solid $grey;
+}
+
+.main-container {
+  padding: 0px 15px;
+
+  .section-header {
+    margin-bottom: 15px;
+
+    h1 {
+      font-size: 1.3em;
+    }
+  }
+
+  .custom-range {
+    margin-top: -15px;
+  }
+
+  .content {
+    margin-bottom: 30px;
+
+    .box-content {
+      background: $grey;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+
+      p {
+        width: 100%;
+        text-align: center;
+        word-spacing: 3px;
+        letter-spacing: 0.6px;
+        line-height: 25px;
+      }
+    }
+  }
+}

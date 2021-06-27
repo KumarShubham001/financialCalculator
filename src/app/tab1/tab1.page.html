@@ -1,16 +1,90 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Worth Calculator
+      Budget Car Checker
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Worth Calculator</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <form [formGroup]='userForm' (ngSubmit)='analyze(userForm)'>
+    <ion-item class="form-item">
+      <ion-label position="stacked">Approx. Gross Salary (Rs.)</ion-label>
+      <ion-input type="text" (ionBlur)="formatNumber($event)" (ionFocus)="transformNumber($event)" required="true"
+        placeholder='Ex. 1000000' formControlName='grossSalary'></ion-input>
+    </ion-item>
+
+    <ion-item class="form-item">
+      <ion-label position="stacked">Affordable Downpayment (Rs.)</ion-label>
+      <ion-input type="text" (ionBlur)="formatNumber($event)" (ionFocus)="transformNumber($event)" required="true"
+        placeholder='Ex. 300000' formControlName='downpayment'></ion-input>
+    </ion-item>
+
+    <ion-item class="form-item">
+      <ion-label position="stacked">Car Price (Rs.)[Optional]</ion-label>
+      <ion-input (ionBlur)="formatNumber($event)" (ionFocus)="transformNumber($event)" placeholder='Ex. 680000'
+        type='text' formControlName='carPrice'></ion-input>
+    </ion-item>
+
+    <div class="button-container">
+      <ion-button [disabled]="userForm.pristine || (userForm.invalid && userForm.dirty)" type='submit' color="primary">
+        <ion-icon name="sync-outline"></ion-icon>
+        Analyze
+      </ion-button>
+    </div>
+  </form>
+
+  <ng-container *ngIf="contentLoaded">
+
+    <ion-item>
+      <ion-label position="stacked" style="width: 136%; max-width: 136%">
+        <ion-text color="secondary" style="text-align: center;">
+          <h1>Installment Perioid (years): {{installmentPeriod | number}}</h1>
+        </ion-text>
+      </ion-label>
+      <ion-range (ionChange)="updateCarPrice($event)" pin="true" [value]="installmentPeriod" min="1" max="10" step="1"
+        snaps="true" ticks="true" color="secondary">
+        <ion-label slot="start">1</ion-label>
+        <ion-label slot="end">10</ion-label>
+      </ion-range>
+    </ion-item>
+
+    <ion-card color="danger" *ngIf="installmentPeriod > defaultInstallmentPeriod">
+      <ion-card-content>
+        Installment Period is more than the Ideal Installment Period for purchasing a car.
+        <p>Ideal Installment Period: {{ defaultInstallmentPeriod | number }} years</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="danger" *ngIf="carError">
+      <ion-card-content>
+        Car price that you have entered is expensive.
+        <p>Budget car price is {{ carPrice | inrCurrency }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="danger" *ngIf="downPaymentError">
+      <ion-card-content>
+        Downpayment should be atleast 20% of the selected car price.
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="success" *ngIf="userForm.get('carPrice').value && !carError">
+      <ion-card-content>
+        Congratulations!<br>Selected car is in your budget.
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="primary" *ngIf="!carError">
+      <ion-card-content>
+        Ideal car price: {{ carPrice | inrCurrency }}<br>
+        <span class="link" (click)="createCustomBrowser()">Search cars?</span>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 
 </ion-content>

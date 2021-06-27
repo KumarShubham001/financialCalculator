@@ -1,0 +1,123 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Budget House Checker
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <form [formGroup]='userForm' (ngSubmit)='analyze(userForm)'>
+    <ion-item class="form-item">
+      <ion-label position="stacked">Approx. Gross Salary (Rs.)</ion-label>
+      <ion-input type="text" (ionBlur)="formatNumber($event)" (ionFocus)="transformNumber($event)" required="true"
+        placeholder='Ex. 1000000' formControlName='grossSalary'></ion-input>
+    </ion-item>
+
+    <ion-item class="form-item">
+      <ion-label position="stacked">Affordable Downpayment (Rs.)</ion-label>
+      <ion-input type="text" (ionBlur)="formatNumber($event)" (ionFocus)="transformNumber($event)" required="true"
+        placeholder='Ex. 300000' formControlName='downpayment'></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked" style="width: 136%; max-width: 136%">
+        <ion-text color="dark" style="width: 100%">
+          <h1 class="field-label">
+            <span style="margin-right: 15px">Installment Duration</span>
+            <b>{{installmentPeriod | number}} years</b>
+          </h1>
+        </ion-text>
+      </ion-label>
+      <ion-range class="custom-range" (ionChange)="installmentPeriod = $event['detail'].value" pin="true"
+        [value]="installmentPeriod" min="1" max="50" color="secondary"></ion-range>
+    </ion-item>
+
+    <ion-item class="form-item">
+      <ion-label position="stacked">House Price (Rs.)[Optional]</ion-label>
+      <ion-input (ionBlur)="formatNumber($event)" (ionFocus)="transformNumber($event)" placeholder='Ex. 6000000'
+        type='text' formControlName='homePrice'></ion-input>
+    </ion-item>
+
+    <div class="button-container">
+      <ion-button [disabled]="userForm.pristine || (userForm.invalid && userForm.dirty)" type='submit' color="primary">
+        <ion-icon name="sync-outline"></ion-icon>
+        Analyze
+      </ion-button>
+    </div>
+  </form>
+
+  <ng-container *ngIf="contentLoaded">
+    <ion-card color="danger" *ngIf="installmentPeriod > defaultInstallmentPeriod">
+      <ion-card-content>
+        Installment Period is more than the Ideal Installment Period for buying a house.
+        <p>Ideal Installment Period: <b>{{ defaultInstallmentPeriod | number }} years</b></p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="danger" *ngIf="homeError">
+      <ion-card-content>
+        House price that you have entered is expensive.
+        <p>Budget house price is {{ homePrice | inrCurrency }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="danger" *ngIf="downPaymentError">
+      <ion-card-content>
+        Downpayment should be atleast 30% of the selected house price.
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="success" *ngIf="userForm.get('homePrice').value && !homeError">
+      <ion-card-content>
+        Congratulations!<br>Selected house is in your budget.
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="primary" *ngIf="!homeError">
+      <ion-card-content>
+        Ideal house price: {{ homePrice | inrCurrency }}<br>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <div class="golder-rules" *ngIf="contentLoaded">
+    <h5>4-Rules you should follow before buying a house.</h5>
+    <ol>
+      <li>
+        <b>What should be the price of a house?</b><br>
+        As a thumb rule, the price of the house that you are looking to buy on a home loan should not be more than 5
+        times of your annual income. By doing so, you will be able to service the EMIs comfortably without stretching
+        your
+        household
+        budget.
+      </li>
+      <li>
+        <b>The 35/50 rule</b><br>
+        While taking a home loan, the lender will ask you about your existing liabilities including personal loan or car
+        loan EMIs. Banks generally do no lend an amount on which the EMI will be more than 45-50 per cent of your
+        monthly take-home pay.
+      </li>
+      <li>
+        <b>Credit score</b><br>
+        Some banks offer a lower interest rate on home loans to those borrowers who have a high credit score. Your
+        credit profile helps in getting a better home loan deal from banks. As a thumb rule, a credit score of 750 and
+        above is
+        considered to be a good credit score by most banks and other lenders.
+      </li>
+      <li>
+        <b>Opt for a shorter duration</b><br>
+        The EMI per lakh, for the same loan amount, is less for a longer tenure and higher for a shorter tenure. But,
+        the interest cost or interest burden is just the reverse. If you keep a longer tenure to keep EMI’s low, the
+        total
+        interest burden will be high. As a rule, in order to keep interest cost low, opt for a lower duration of the
+        loan.
+      </li>
+    </ol>
+  </div>
+
+</ion-content>

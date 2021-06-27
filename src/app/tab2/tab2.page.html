@@ -1,16 +1,37 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
       Tab 2
     </ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-toolbar>
+    <ion-segment scrollable [(ngModel)]="segmentType">
+      <ion-segment-button value="ci">
+        <ion-label>CI</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="fd">
+        <ion-label>FD</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="others">
+        <ion-label>Others</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 
+  <div [ngSwitch]="segmentType">
+    <ng-container *ngSwitchCase="'ci'">
+      <app-ci></app-ci>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'fd'">
+      <app-fd></app-fd>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'others'">
+      <app-other-calculators></app-other-calculators>
+    </ng-container>
+  </div>
 </ion-content>
