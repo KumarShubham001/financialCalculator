@@ -10,14 +10,15 @@
 * [Contact](#contact)
 
 ## General info
-Purpose: Purpose of the project is to allow a common individual to plan their purchase of car or house or invesmtments like FDs or any market investments.
-Using this android app, 
+Purpose: Purpose of the project is to allow a common individual to plan their purchase of car or house or invesmtments like FDs or any other market investments.
 
-* One can easily plan their next car purchase like they can provide their gross income, and the downpayment they can afford and in return we provide the budget car details. One can also check whether his dream is his range or not.
+* Using this android app:
 
-* One can easily plan their next house purchase like they can provide their gross income, the downpayment they can afford, the installment duration and in return we provide the budget house details. One can also check whether his dream is his range or not.
+  1. One can easily plan their next car purchase like they can provide their gross income, and the downpayment they can afford and in return we provide the budget car details. One can also check whether his dream is his range or not.
 
-* Compound Interest Calculator, FD Calculator, Target Amount Calculator and other similar calculators.
+  2. One can easily plan their next house purchase like they can provide their gross income, the downpayment they can afford, the installment duration and in return we provide the budget house details. One can also check whether his dream is his range or not.
+
+  3. Compound Interest Calculator, FD Calculator, Target Amount Calculator and other similar calculators.
 
 ## Technologies
 * Ionic 4.0.0
